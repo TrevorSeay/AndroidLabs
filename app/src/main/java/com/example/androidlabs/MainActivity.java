@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_grid);
+        setContentView(R.layout.activity_main_linear);
 
         findViewById(R.id.button).setOnClickListener(view -> Toast.makeText(getApplicationContext(), R.string.toast_message, Toast.LENGTH_LONG).show());
 
