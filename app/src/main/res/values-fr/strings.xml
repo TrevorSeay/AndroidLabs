@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AndroidLabs</string>
-    <string name="hello_message">Bonjour, le Monde!</string>
-    <string name="ButtonText">Je suis un bouton</string>
+    <string name="look_at_my_gui_text">Regardez mon GUI:</string>
+    <string name="click_here_text">CLIQUEZ ICI</string>
+    <string name="check_this_out_text">Regarde ça!</string>
+    <string name="switch_on_off_text">Commutateur allumer / éteindre</string>
+    <string name="type_here_text">Écrivez ici</string>
+    <string name="toast_message">Voici plus d\'informations</string>
+    <string name="switch_is_now_text">Le commutateur est maintenant</string>
+    <string name="on_text">allumer</string>
+    <string name="off_text">éteindre</string>
+    <string name="undo_text">ANNULER</string>
 </resources>
