@@ -11,4 +11,14 @@
     <string name="on_text">on</string>
     <string name="off_text">off</string>
     <string name="undo_text">UNDO</string>
+    <string name="enter_email_text">Enter your email address:</string>
+    <string name="type_email_hint">Type email here</string>
+    <string name="enter_password_text">Type your password:</string>
+    <string name="login_text">Login</string>
+    <string name="your_profile_text">Your profile</string>
+    <string name="your_name_text">Your name:</string>
+    <string name="enter_name_text">Enter your name</string>
+    <string name="your_picture_text">Your picture</string>
+    <string name="pic_instr_text">Click the button above to take a picture</string>
+    <string name="empty_email_toast">Email address may not be empty.</string>
 </resources>

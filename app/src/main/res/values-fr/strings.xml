@@ -11,4 +11,14 @@
     <string name="on_text">allumer</string>
     <string name="off_text">éteindre</string>
     <string name="undo_text">ANNULER</string>
+    <string name="enter_email_text">Entrez votre adresse email:</string>
+    <string name="type_email_hint">Saisissez votre e-mail ici</string>
+    <string name="enter_password_text">Entrez votre mot de passe:</string>
+    <string name="login_text">S\'identifier</string>
+    <string name="your_profile_text">Votre profil</string>
+    <string name="your_name_text">Votre nom:</string>
+    <string name="enter_name_text">Entrez votre nom</string>
+    <string name="your_picture_text">Ta photo:</string>
+    <string name="pic_instr_text">Cliquez sur le bouton ci-dessus pour prendre une photo</string>
+    <string name="empty_email_toast">L\'adresse e-mail ne doit pas être vide.</string>
 </resources>

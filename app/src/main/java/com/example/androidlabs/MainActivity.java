@@ -3,32 +3,57 @@ package com.example.androidlabs;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.Switch;
+import android.widget.EditText;
 import android.widget.Toast;
-
-import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity
 {
+
+    static final String SHARED_PREFS_EMAIL = "emailPrefs";
+    static final String SHARED_PREFS_EMAIL_ADDRESS = "email";
+
+    static final String EXTRA_EMAIL = "EMAIL";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_grid);
+        setContentView(R.layout.activity_email_request_layout);
 
-        findViewById(R.id.button).setOnClickListener(view -> Toast.makeText(getApplicationContext(), R.string.toast_message, Toast.LENGTH_LONG).show());
+        SharedPreferences prefs = getSharedPreferences(SHARED_PREFS_EMAIL, Context.MODE_PRIVATE);
+        String emailAddress = prefs.getString(SHARED_PREFS_EMAIL_ADDRESS, "");
 
-        ((Switch)findViewById(R.id.switch1)).setOnCheckedChangeListener((s, b) ->
+        EditText emailInput = findViewById(R.id.email_input);
+        emailInput.setText(emailAddress);
+
+        findViewById(R.id.login_button).setOnClickListener(v ->
         {
-            Snackbar sb = Snackbar.make(s, getString(R.string.switch_is_now_text) + " " + (b ? getString(R.string.on_text) : getString(R.string.off_text)), Snackbar.LENGTH_LONG);
-            sb.setAction(R.string.undo_text, click -> s.setChecked(!b));
-            sb.show();
+            Intent goToProfile = new Intent(MainActivity.this, ProfileActivity.class);
+            String email = ((EditText)findViewById(R.id.email_input)).getText().toString();
+            if(email.equals(""))
+                Toast.makeText(getApplicationContext(), R.string.empty_email_toast, Toast.LENGTH_SHORT).show();
+            else
+            {
+                goToProfile.putExtra(EXTRA_EMAIL, email);
+                startActivity(goToProfile);
+            }
         });
+    }
+
+    @Override
+    protected void onPause()
+    {
+        SharedPreferences prefs = getSharedPreferences(SHARED_PREFS_EMAIL, Context.MODE_PRIVATE);
+        String emailInput = ((EditText)findViewById(R.id.email_input)).getText().toString();
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(SHARED_PREFS_EMAIL_ADDRESS, emailInput);
+        editor.commit();
+
+        super.onPause();
     }
 }
