@@ -34,7 +34,6 @@
         android:layout_below="@id/textView"
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/button"
-        android:layout_weight="1"
         android:text="@string/check_this_out_text" />
 
     <ImageButton

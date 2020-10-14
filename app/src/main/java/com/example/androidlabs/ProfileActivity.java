@@ -33,6 +33,8 @@ public class ProfileActivity extends AppCompatActivity
 
         Intent fromMain = getIntent();
         ((EditText)findViewById(R.id.email_profile_input)).setText(fromMain.getStringExtra(MainActivity.EXTRA_EMAIL));
+
+        findViewById(R.id.login_button).setOnClickListener((v) -> startActivity(new Intent(ProfileActivity.this, ChatRoomActivity.class)));
     }
 
     @Override

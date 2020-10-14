@@ -21,4 +21,7 @@
     <string name="your_picture_text">Your picture</string>
     <string name="pic_instr_text">Click the button above to take a picture</string>
     <string name="empty_email_toast">Email address may not be empty.</string>
+    <string name="delete_alert_title">Do you want to delete this?</string>
+    <string name="selected_row_is">The selected row is:</string>
+    <string name="database_id_is">The database ID is:</string>
 </resources>
