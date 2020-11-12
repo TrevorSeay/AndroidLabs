@@ -24,4 +24,10 @@
     <string name="delete_alert_title">Voulez-vous le supprimer?</string>
     <string name="selected_row_is">La ligne sélectionnée est:</string>
     <string name="database_id_is">L\'ID de la base de données est:</string>
+    <string name="open_weather">Ouvrez L\'application Météo</string>
+    <string name="visual_weather">Météo Visuelle</string>
+    <string name="current_temp">%1$s°C</string>
+    <string name="min_temp">La température minimale pour aujourd\'hui est: %1$s°C</string>
+    <string name="max_temp">La température maximale pour aujourd\'hui est: %1$s°C</string>
+    <string name="uv_index">L\'indice UV d\'aujourd\'hui est: %1$s</string>
 </resources>

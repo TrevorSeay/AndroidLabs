@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WeatherForecast"
+    android:columnCount="2"
+    android:rowCount="3">
+
+    <ImageView
+        android:id="@+id/disp_weather"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@id/cur_temp"
+        android:contentDescription="@string/visual_weather"/>
+
+    <TextView
+        android:id="@+id/cur_temp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentEnd="true"
+        android:textSize="35sp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/min_temp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textSize="17.5sp"
+        android:layout_below="@id/disp_weather"/>
+
+    <TextView
+        android:id="@+id/max_temp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textSize="17.5sp"
+        android:layout_below="@id/min_temp"/>
+
+    <TextView
+        android:id="@+id/uv_rating"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textSize="17.5sp"
+        android:layout_below="@id/max_temp"/>
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        style="?android:attr/progressBarStyleHorizontal"/>
+
+</RelativeLayout>

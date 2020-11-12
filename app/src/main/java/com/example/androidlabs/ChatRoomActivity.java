@@ -149,6 +149,7 @@ public class ChatRoomActivity extends AppCompatActivity
                         .append(c.getString(0))
                         .append(", ")
                         .append(c.getColumnName(1))
+                        .append(": ")
                         .append(c.getInt(1))
                         .append("\n");
             while(c.moveToNext());
@@ -195,9 +196,7 @@ public class ChatRoomActivity extends AppCompatActivity
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        }
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { }
     }
 
     private class MessageAdapter extends BaseAdapter
@@ -223,8 +222,8 @@ public class ChatRoomActivity extends AppCompatActivity
 
         public void remove(int position)
         {
+            printCursor(DB.rawQuery("DELETE FROM " + TABLE_NAME + " WHERE _id=?", new String[] { Integer.toString(position + 1) }), DB.getVersion()).close();
             this.getContents().remove(position);
-            printCursor(DB.rawQuery("DELETE FROM " + TABLE_NAME + " WHERE _id=?", new String[] { Integer.toString(position) }), DB.getVersion()).close();
             super.notifyDataSetChanged();
         }
     }

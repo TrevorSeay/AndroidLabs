@@ -35,6 +35,7 @@ public class ProfileActivity extends AppCompatActivity
         ((EditText)findViewById(R.id.email_profile_input)).setText(fromMain.getStringExtra(MainActivity.EXTRA_EMAIL));
 
         findViewById(R.id.login_button).setOnClickListener((v) -> startActivity(new Intent(ProfileActivity.this, ChatRoomActivity.class)));
+        findViewById(R.id.open_weather).setOnClickListener((v) -> startActivity(new Intent(ProfileActivity.this, WeatherForecast.class)));
     }
 
     @Override
