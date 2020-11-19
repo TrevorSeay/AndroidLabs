@@ -32,12 +32,12 @@ public class MainActivity extends AppCompatActivity
 
         findViewById(R.id.login_button).setOnClickListener(v ->
         {
-            Intent goToProfile = new Intent(MainActivity.this, ProfileActivity.class);
             String email = ((EditText)findViewById(R.id.email_input)).getText().toString();
             if(email.equals(""))
                 Toast.makeText(getApplicationContext(), R.string.empty_email_toast, Toast.LENGTH_SHORT).show();
             else
             {
+                Intent goToProfile = new Intent(MainActivity.this, ProfileActivity.class);
                 goToProfile.putExtra(EXTRA_EMAIL, email);
                 startActivity(goToProfile);
             }

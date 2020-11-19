@@ -30,4 +30,12 @@
     <string name="min_temp">The min temperature for today is: %1$s°C</string>
     <string name="max_temp">The max temperature for today is: %1$s°C</string>
     <string name="uv_index">The UV index for today is: %1$s</string>
+    <string name="send_text">SEND</string>
+    <string name="receive_text">RECEIVE</string>
+    <string name="type_here">Type here</string>
+    <string name="msg_here_text">Message here</string>
+    <string name="id_text">"ID: %1$d"</string>
+    <string name="id_hint">"ID:"</string>
+    <string name="is_a_send_msg">Is a send message</string>
+    <string name="hide_text">HIDE</string>
 </resources>

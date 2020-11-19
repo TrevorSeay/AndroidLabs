@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailsFragment"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/message_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/msg_here_text"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/id_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/id_hint"
+        android:layout_below="@id/message_textview"/>
+
+    <CheckBox
+        android:id="@+id/is_sent_chk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/is_a_send_msg"
+        android:clickable="false"
+        android:layout_below="@id/id_textview"/>
+
+    <Button
+        android:id="@+id/hide_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:text="@string/hide_text"/>
+
+</RelativeLayout>

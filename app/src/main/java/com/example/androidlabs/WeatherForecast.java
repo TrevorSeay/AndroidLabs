@@ -202,7 +202,6 @@ public class WeatherForecast extends AppCompatActivity
         public void onProgressUpdate(Integer ... args)
         {
             progressBar.setVisibility(View.VISIBLE);
-            for(int i = 0; i < new Random(10000000).nextInt(); i++) { i += 1; i-=1; }
             progressBar.setProgress(args[0]);
         }
         //Type3

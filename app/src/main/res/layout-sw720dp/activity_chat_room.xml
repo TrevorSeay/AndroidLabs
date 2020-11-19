@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:rowCount="10"
+    android:columnCount="3"
+    tools:context=".ChatRoomActivity">
+
+    <GridLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+
+        android:minWidth="300dp"
+
+        android:layout_rowSpan="10"
+        android:layout_columnSpan="1"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight=".5"
+
+        android:layout_row="0"
+        android:layout_column="0"
+        android:rowCount="10"
+        android:columnCount="5">
+
+        <ListView
+            android:id="@+id/messages_view"
+
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+
+            android:layout_row="0"
+            android:layout_rowSpan="9"
+            android:layout_column="0"
+            android:layout_columnSpan="5"
+            android:layout_rowWeight=".9"/>
+
+        <Button
+            android:id="@+id/send_button"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:text="@string/send_text"
+
+            android:layout_row="9"
+            android:layout_rowSpan="1"
+            android:layout_column="0"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="1"/>
+
+        <EditText
+            android:id="@+id/message_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_row="9"
+            android:layout_column="1"
+            android:layout_rowSpan="1"
+            android:layout_columnSpan="3"
+            android:layout_columnWeight="1"
+
+
+            android:autofillHints=""
+            android:hint="@string/type_here"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/receive_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:text="@string/receive_text"
+
+            android:layout_row="9"
+            android:layout_rowSpan="1"
+            android:layout_column="4"
+            android:layout_columnSpan="1"
+            android:layout_columnWeight="1"/>
+    </GridLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:layout_row="0"
+        android:layout_rowSpan="10"
+        android:layout_column="1"
+        android:layout_columnSpan="2"
+        android:layout_rowWeight="1"
+        android:layout_columnWeight="1">
+
+
+    </FrameLayout>
+
+</GridLayout>

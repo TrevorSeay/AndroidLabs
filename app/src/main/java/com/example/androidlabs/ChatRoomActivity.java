@@ -1,14 +1,18 @@
 package com.example.androidlabs;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.room.Dao;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,6 +21,8 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.telecom.Call;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +31,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,6 +50,7 @@ public class ChatRoomActivity extends AppCompatActivity
     private static final String TABLE_NAME = "Message_T";
     private static final String COL_MSG = "msg";
     private static final String COL_FROM = "frm";
+    private static final String COL_ID = "_id";
 
     private static final int FROM_SENT = 0;
     private static final int FROM_RECEIVED = 1;
@@ -54,6 +62,8 @@ public class ChatRoomActivity extends AppCompatActivity
     private static Drawable send_drawable;
     private static Drawable receive_drawable;
 
+    private static Fragment fragment;
+
     @SuppressLint({"StaticFieldLeak", "UseCompatLoadingForDrawables"})
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -63,6 +73,9 @@ public class ChatRoomActivity extends AppCompatActivity
 
         send_drawable = getDrawable(R.drawable.row_send);
         receive_drawable = getDrawable(R.drawable.row_receive);
+
+        FrameLayout frameLayout = findViewById(R.id.frame_layout);
+        boolean isTablet = frameLayout != null;
 
         ListView listView = findViewById(R.id.messages_view);
         MessageAdapter adapter = new MessageAdapter();
@@ -93,34 +106,39 @@ public class ChatRoomActivity extends AppCompatActivity
             private void saveAndDisplayMessage(int from)
             {
                 String msg = input.getText().toString();
-                saveMessage(msg, from);
-                displayMessage(msg, from);
+                saveMessage(msg, from, createAndDisplayMessage(msg, from));
             }
 
-            private void displayMessage(String msg, int from)
+            private Message createAndDisplayMessage(String msg, int from)
             {
-                LinearLayout ll = (LinearLayout)inflater.inflate(from == FROM_RECEIVED ? R.layout.receive_row_layout : R.layout.send_row_layout, listView, false);
-                TextView tv = (TextView)ll.getChildAt(from);
+                Message m = (Message)inflater.inflate(from == FROM_RECEIVED ? R.layout.receive_row_layout : R.layout.send_row_layout, listView, false);
+                TextView tv = (TextView)m.getChildAt(from);
                 tv.setText(msg);
-                adapter.getContents().add(ll);
-                listView.setSelection(adapter.getCount() - 1);
+                adapter.getContents().add(m);
+                listView.setSelection(listView.getCount() - 1);
                 clearInput();
+                return m;
             }
 
             private void populateExistingMessages()
             {
-                Cursor cursor = DB.query(false, TABLE_NAME, new String[] { COL_MSG, COL_FROM }, null, null, null, null, null, null);
+                Cursor cursor = DB.query(false, TABLE_NAME, new String[] { COL_ID, COL_MSG, COL_FROM }, null, null, null, null, null, null);
                 while(cursor.moveToNext())
-                    displayMessage(cursor.getString(0), cursor.getInt(1));
+                    createAndDisplayMessage(
+                            cursor.getString(1),
+                            cursor.getInt(2))
+                    .setInfo(cursor.getLong(0),
+                            cursor.getString(1),
+                            cursor.getInt(2) == FROM_SENT);
                 printCursor(cursor, DB.getVersion()).close();
             }
 
-            private void saveMessage(String msg, int from)
+            private void saveMessage(String msg, int from, Message using)
             {
                 ContentValues cv = new ContentValues();
                 cv.put(COL_MSG, msg);
                 cv.put(COL_FROM, from);
-                DB.insert(TABLE_NAME, "NullColumnName", cv);
+                using.setInfo(DB.insert(TABLE_NAME, "NullColumnName", cv), msg, from == FROM_SENT);
             }
         }.execute();
 
@@ -128,11 +146,33 @@ public class ChatRoomActivity extends AppCompatActivity
         {
             new AlertDialog.Builder(this)
                     .setTitle(R.string.delete_alert_title)
-                    .setMessage(getString(R.string.selected_row_is) + " " + pos + "\n" + getString(R.string.database_id_is) + " " + id)
-                    .setPositiveButton(android.R.string.yes, (dialog, which) -> adapter.remove(pos))
+                    .setMessage(getString(R.string.selected_row_is) + " " + pos + "\n" + getString(R.string.database_id_is) + " " + adapter.getContents().get(pos).getDbId())
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> { adapter.remove(pos); if(isTablet && fragment != null) getSupportFragmentManager().beginTransaction().remove(fragment).commit(); })
                     .setNegativeButton(android.R.string.no, (dialog, which) -> dialog.cancel())
                     .show();
             return true;
+        });
+
+        listView.setOnItemClickListener((list, view, position, id) ->
+        {
+            Bundle bundle = new Bundle();
+            Message msg = adapter.getContents().get(position);
+            bundle.putString("msg", msg.getMsg());
+            bundle.putLong("id", msg.getDbId());
+            bundle.putBoolean("chk", msg.getIsSent());
+            bundle.putBoolean("tblt", isTablet);
+            if(isTablet)
+            {
+                fragment = new DetailsFragment();
+                fragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, fragment).commit();
+            }
+            else
+            {
+                Intent intent = new Intent(ChatRoomActivity.this, EmptyActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
         });
     }
 
@@ -189,7 +229,7 @@ public class ChatRoomActivity extends AppCompatActivity
         @Override
         public void onCreate(SQLiteDatabase db)
         {
-            db.execSQL("Create TABLE " + TABLE_NAME + "(_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            db.execSQL("Create TABLE " + TABLE_NAME + "(" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COL_MSG + " TEXT, " +
                 COL_FROM + " INTEGER);"
             );
@@ -201,9 +241,9 @@ public class ChatRoomActivity extends AppCompatActivity
 
     private class MessageAdapter extends BaseAdapter
     {
-        private ArrayList<View> contents = new ArrayList<View>();
+        private ArrayList<Message> contents = new ArrayList<Message>();
 
-        public ArrayList<View> getContents() { return this.contents; }
+        public ArrayList<Message> getContents() { return this.contents; }
 
         @Override
         public int getCount() { return this.getContents().size(); }
@@ -212,7 +252,7 @@ public class ChatRoomActivity extends AppCompatActivity
         public Object getItem(int position) { return this.getContents().get(position); }
 
         @Override
-        public long getItemId(int position) { return (long)position; }
+        public long getItemId(int position) { return getContents().get(position).getDbId(); }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
@@ -222,10 +262,11 @@ public class ChatRoomActivity extends AppCompatActivity
 
         public void remove(int position)
         {
-            printCursor(DB.rawQuery("DELETE FROM " + TABLE_NAME + " WHERE _id=?", new String[] { Integer.toString(position + 1) }), DB.getVersion()).close();
+            printCursor(DB.rawQuery("DELETE FROM " + TABLE_NAME + " WHERE " + COL_ID + "=?", new String[] { Long.toString(getItemId(position)) }), DB.getVersion()).close();
             this.getContents().remove(position);
             super.notifyDataSetChanged();
         }
     }
 
 }
+
